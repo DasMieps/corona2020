@@ -1,0 +1,57 @@
+<p>hello</p>
+
+<div *ngIf="shoppinglist" class="ui grid">
+    <div class="four wide column">
+    </div>
+    <div class="twelve wide column">
+        <h1 class="ui header">{{ shoppinglist?.name }}</h1>
+        <div class="ui divider"></div>
+        <div class="ui grid">
+
+            <div class="four wide column">
+                <h4 class="ui header">ID</h4>
+                {{ shoppinglist?.id }}
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">bis zum Datum</h4>
+                {{ shoppinglist?.due_date }}
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">Creator ID</h4>
+                {{ shoppinglist?.creator_id }}
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">Shopper ID</h4>
+                {{ shoppinglist?.shopper_id }}
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">Preis</h4>
+                {{ shoppinglist?.actual_price }}
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">Comment</h4>
+                <div *ngFor="let comment of shoppinglist.comments;">{{comment.id}} {{comment.text}} {{comment.user_id}}
+                    {{comment.updated_at}}
+                </div>
+            </div>
+            <div class="four wide column">
+                <h4 class="ui header">Posten</h4>
+                <div *ngFor="let item of shoppinglist.items; last as l">{{item.id}} {{item.name}}</div>
+            </div>
+
+    </div>
+
+</div>
+
+<!--<button (click)= "showShoppinglistList()" class= "ui red button">Zurück zur
+Shoppinglist</button> -->
+
+<button [routerLink]="'/shoppinglists'" class="ui red button">Zurück zur Übersicht</button>
+<button class="ui tiny red labeled icon button" *ngIf="authService.isLoggedIn()" (click)=" removeShoppinglist()"><i class="remove icon"></i>
+    Shoppinglist löschen
+</button>
+<a *ngIf="authService.isLoggedIn()" class="ui tiny yellow labeled icon button"
+   [routerLink]="['../../admin', shoppinglist?.id]">
+    <i class="write icon"></i> Shoppinglist bearbeiten
+</a>
+

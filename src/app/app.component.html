@@ -1,0 +1,20 @@
+<!--<h1>Welcome to {{ title }}! <br/>
+Person: {{ person?.name }}
+</h1>
+<a [href]= "myUrl">Ein Link </a>
+
+<a [href]= " myUrl ">Dynamischer Link </a>
+
+<button (click)="myClickHandler()"> Click me </button>
+
+<input [(ngModel)]= "myProperty" type = "text">
+Wert: {{myProperty}} -->
+
+<div class="ui four item tabs menu">
+    <a routerLink="home" routerLinkActive="active" class="item">Home</a>
+    <a routerLink="shoppinglists" routerLinkActive="active" class="item">Shoppinglist</a>
+    <a *ngIf= " isLoggedIn()" routerLink= "admin" routerLinkActive= "active" class= "item" >Administration</a>
+    <a routerLink= "login" routerLinkActive= "active" class= "item" >{{ getLoginLabel ()}}</a>
+</div>
+
+<router-outlet></router-outlet>
