@@ -31,7 +31,7 @@ import {Shoppinglist} from './shoppinglist' ;
 
 export class ShoppinglistFactory {
     static empty(): Shoppinglist {
-        return new Shoppinglist(null, '', new Date(), 0, 0, 0,
+        return new Shoppinglist(0, '', new Date(), 0, 0, 0,
             [{id: 0, name: '', quantity: 0, max_price: 0}], [{id: 0, text: '', user_id: 0, updated_at: new Date()}]);
     }
 

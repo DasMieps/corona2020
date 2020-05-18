@@ -39,5 +39,20 @@
         </div>
     </div>
 
+   <!-- <div class="field">
+        <label>Kommentare</label>
+        <div formArrayName="comments">
+            <div class="fields" *ngFor="let control of comments?.controls; index as i; last as l" [formGroupName]="i">
+                <input type="hidden" name="id">
+                <div class="nine wide field">
+                    <input formControlName="text" placeholder="Text">
+                </div>
+                <div class="one wide field" *ngIf="l">
+                    <button (click)="addThumbnailControlComment()" class="ui large button" type="button">+</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
     <button type="submit" class="ui button" [disabled]="shoppinglistForm.invalid">Speichern</button>
 </form>

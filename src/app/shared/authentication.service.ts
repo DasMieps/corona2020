@@ -19,11 +19,17 @@ export class AuthenticationService {
         return Number.parseInt(localStorage.getItem('userId'));
     }
 
+    public getCurrentUserRole(){
+        return String(localStorage.getItem('role'));
+    }
+
     public setLocalStorage(token:string){
         const decodedToken = decode(token);
         console.log(decodedToken);
         localStorage.setItem('token', token);
         localStorage.setItem('userId', decodedToken.user.id);
+        localStorage.setItem('userRole', decodedToken.user.role);
+
     }
 
     logout() {

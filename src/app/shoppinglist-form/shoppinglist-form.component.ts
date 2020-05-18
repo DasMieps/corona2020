@@ -5,6 +5,7 @@ import {ShoppinglistFactory} from "../shared/shoppinglist-factory";
 import {ShoppinglistCoronaService} from "../shared/shoppinglist-corona.service";
 import {Shoppinglist, Item, Comment} from "../shared/shoppinglist";
 import {ShoppinglistFormErrorMessages} from "./shoppinglist-form-error-messages";
+import {AuthenticationService} from '../shared/authentication.service';
 
 @Component({
     selector: 'bs-shoppinglist-form',
@@ -17,10 +18,10 @@ export class ShoppinglistFormComponent implements OnInit {
     errors: { [key: string]: string } = {};
     isUpdatingShoppinglist = false;
     items: FormArray;
+    comments: FormArray;
 
-    // comments:FormArray;
     constructor(private fb: FormBuilder, private sc: ShoppinglistCoronaService,
-                private route: ActivatedRoute, private router: Router) {
+                private route: ActivatedRoute, private authService:AuthenticationService, private router: Router) {
     }
 
     ngOnInit() {
@@ -44,8 +45,8 @@ export class ShoppinglistFormComponent implements OnInit {
             name: [this.shoppinglist.name, Validators.required],
             due_date: this.shoppinglist.due_date,
             actual_price: this.shoppinglist.actual_price,
-            items: this.items
-            //comments:this.comments
+            items: this.items,
+            comments:this.comments
         });
         this.shoppinglistForm.statusChanges.subscribe(() =>
             this.updateErrorMessages());
@@ -66,20 +67,41 @@ export class ShoppinglistFormComponent implements OnInit {
                 })
             )
         );
-       // console.log(this.items);
+
+   /*     console.log(this.shoppinglist.comments);
+        if (this.shoppinglist.comments.length == 0) { //if new book had no comments -> but no in edit mode
+            this.shoppinglist.comments.push(new Comment(0, '', 0, new Date()))
+        }
+        this.comments = this.fb.array(
+            this.shoppinglist.comments.map(
+                t => this.fb.group({
+                    id: this.fb.control(t.id),
+                    text: this.fb.control(t.text),
+                    user_id: this.fb.control(t.user_id),
+                    updated_at: this.fb.control(t.updated_at)
+                })
+            )
+        );*/
     }
 
     addThumbnailControl() {
         this.items.push(this.fb.group({name: null, quantity: null, max_price: null}));
     }
 
+    addThumbnailControlComment() {
+        this.comments.push(this.fb.group({text: null}));
+    }
+
 
     submitForm() {
         // filter empty values
         this.shoppinglistForm.value.items = this.shoppinglistForm.value.items.filter(thumbnail => thumbnail.name);
+    //    this.shoppinglistForm.value.comments = this.shoppinglistForm.value.comments.filter(thumbnail => thumbnail.text);
         const shoppinglist: Shoppinglist = ShoppinglistFactory.fromObject(this.shoppinglistForm.value);
         //deep copy  - did not work without??
         shoppinglist.items = this.shoppinglistForm.value.items;
+        //shoppinglist.comments = this.shoppinglistForm.value.comments;
+
         console.log(shoppinglist);
 
         if (this.isUpdatingShoppinglist) {
@@ -88,8 +110,7 @@ export class ShoppinglistFormComponent implements OnInit {
                 this.router.navigate(['../../shoppinglists', shoppinglist.id], {relativeTo: this.route});
             });
         } else {
-            shoppinglist.creator_id = 1;// test
-            console.log(shoppinglist);
+            shoppinglist.creator_id = this.authService.getCurrentUserId();
             this.sc.create(shoppinglist).subscribe(res => {
                 this.shoppinglist = ShoppinglistFactory.empty();
                 this.shoppinglistForm.reset(ShoppinglistFactory.empty());

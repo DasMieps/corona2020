@@ -2,6 +2,10 @@ import {Item} from './item';
 export {Item} from './item';
 import {Comment} from './comment';
 export {Comment} from './comment';
+import {Creator} from './creator';
+export {Creator} from './creator';
+import {Shopper} from './shopper';
+export {Shopper} from './shopper';
 
 export class Shoppinglist {
     constructor (
@@ -12,6 +16,8 @@ export class Shoppinglist {
         public shopper_id?: number,
         public actual_price?: number,
         public items?: Item[],
-        public comments?: Comment[]
+        public comments?: Comment[],
+        public creator?: Creator,
+        public shopper?: Shopper
     ) {}
 }
